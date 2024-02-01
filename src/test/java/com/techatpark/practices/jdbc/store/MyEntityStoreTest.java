@@ -4,6 +4,7 @@ import com.techatpark.practices.jdbc.model.MyEntity;
 import org.apache.commons.lang3.ObjectUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.locationtech.jts.geom.LineSegment;
 
 import java.sql.SQLException;
 
@@ -16,7 +17,7 @@ class MyEntityStoreTest {
 
         movieMaker.delete();
 
-        MyEntity myEntity = new MyEntity(1, "Bahubali");
+        MyEntity myEntity = new MyEntity(1, new LineSegment(12,222,1221,1222));
 
         movieMaker.create(myEntity);
 
