@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyEntityStore {
+public class MyEntityService {
 
     public void create(MyEntity myEntity) throws SQLException {
         Connection connection = getConnection();

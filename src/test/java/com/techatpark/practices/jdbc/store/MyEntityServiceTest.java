@@ -3,16 +3,15 @@ package com.techatpark.practices.jdbc.store;
 import com.techatpark.practices.jdbc.model.MyEntity;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.locationtech.jts.geom.LineSegment;
 
 import java.sql.SQLException;
 
-class MyEntityStoreTest {
+class MyEntityServiceTest {
 
     @Test
     void testRoundTrip() throws SQLException {
 
-        MyEntityStore movieMaker = new MyEntityStore();
+        MyEntityService movieMaker = new MyEntityService();
 
         movieMaker.delete();
 

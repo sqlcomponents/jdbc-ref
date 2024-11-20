@@ -1,8 +1,9 @@
 version: '3.8'
+
 services:
   postgres_db:
-    image: postgres:latest
-    container_name: PostgresContainer
+    image: postgres:11
+    container_name: MovieDatabase
     restart: always
     environment:
       - POSTGRES_USER=postgres
@@ -11,3 +12,10 @@ services:
       - ${PWD}/init.db:/docker-entrypoint-initdb.d
     ports:
       - '5432:5432'
+    command:
+      [
+        "postgres",
+        "-c", "log_statement=ddl",
+        "-c", "log_line_prefix=",
+        "-c", "log_statement=mod",
+      ]
