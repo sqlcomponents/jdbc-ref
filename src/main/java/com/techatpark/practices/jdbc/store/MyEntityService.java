@@ -11,23 +11,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.postgresql.geometric.PGlseg;
-import org.postgresql.geometric.PGpoint;
-import org.locationtech.jts.geom.LineSegment;
-
 public class MyEntityStore {
 
     public void create(MyEntity myEntity) throws SQLException {
         Connection connection = getConnection();
         String insertQuery = "INSERT INTO my_entity(the_value) VALUES (?)";
         PreparedStatement preparedStatement = connection.prepareStatement(insertQuery);
-        // Value as LOCATION TECH LSEG => Postgress LSE
 
-        PGpoint pGpoint1 = new PGpoint(myEntity.theValue().p0.x, myEntity.theValue().p0.y);
-        PGpoint pGpoint2 = new PGpoint(myEntity.theValue().p1.x, myEntity.theValue().p1.y);
-        PGlseg pGlseg = new PGlseg(pGpoint1,pGpoint2);
-
-        preparedStatement.setObject(1, pGlseg);
+        preparedStatement.setString(1, myEntity.theValue());
         preparedStatement.execute();
     }
 
@@ -43,11 +34,8 @@ public class MyEntityStore {
 
             // Step 4: Process the ResultSet object.
             while (rs.next()) {
-                // Value as Postgress LSE => LOCATION TECH LSEG
-                PGlseg pGlseg = (PGlseg) rs.getObject(2);
-                LineSegment lineSegment = new LineSegment(pGlseg.point[0].x,pGlseg.point[0].y,pGlseg.point[1].x,pGlseg.point[1].y);
 
-                myEntities.add(new MyEntity(rs.getLong(1), lineSegment));
+                myEntities.add(new MyEntity(rs.getLong(1), rs.getString(2)));
             }
 
         return myEntities;
