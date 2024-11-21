@@ -19,7 +19,7 @@ import java.sql.ResultSet;
  * ./mvnw dependency:tree -Dscope=compile
  *
  * 2. Use Anything JAVA permits
- * 3. You use this in Spring Boot, Quarkus or Anything
+ * 3. You use this in Spring Boot, Quarkus or Anything. (Framework/Library Independent)
  */
 public class PersistencePuzzle {
 

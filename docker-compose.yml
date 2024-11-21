@@ -12,6 +12,7 @@ services:
       - ${PWD}/init.db:/docker-entrypoint-initdb.d
     ports:
       - '5432:5432'
+    ## docker logs -f the_database
     command:
       [
         "postgres",
