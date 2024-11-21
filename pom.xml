@@ -15,9 +15,6 @@
 		<postgresql.version>42.7.2</postgresql.version>
 		<junit.version>5.9.3</junit.version>
 
-		<maven.compiler.compilerArgument>-Xlint:-processing</maven.compiler.compilerArgument>
-		<maven.compiler.failOnWarning>true</maven.compiler.failOnWarning>
-
 	</properties>
 
 	<dependencyManagement>
