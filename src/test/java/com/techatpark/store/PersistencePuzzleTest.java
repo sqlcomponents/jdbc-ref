@@ -1,6 +1,6 @@
-package com.techatpark.practices.jdbc.store;
+package com.techatpark.store;
 
-import com.techatpark.practices.jdbc.model.Person;
+import com.techatpark.model.Person;
 import org.junit.jupiter.api.Test;
 import org.postgresql.ds.PGSimpleDataSource;
 

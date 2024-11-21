@@ -1,6 +1,6 @@
-package com.techatpark.practices.jdbc.store;
+package com.techatpark.store;
 
-import com.techatpark.practices.jdbc.model.Person;
+import com.techatpark.model.Person;
 
 import java.util.Optional;
 
@@ -16,12 +16,15 @@ import java.sql.ResultSet;
 /**
  * 1. Only You, JDK and JDBC Drive (Postgres)
  *
- * ./mvnw dependency:tree -Dscope=compile
+ * mvn dependency:tree -Dscope=compile
  *
  * 2. Use Anything JAVA permits
  * 3. You use this in Spring Boot, Quarkus or Anything. (Framework/Library Independent)
  */
 public class PersistencePuzzle {
+
+    private static final String INSERT_SQL = "INSERT INTO person(name) VALUES (?)";
+    private static final String SELECT_SQL = "SELECT id,name from person where id=?";
 
     private final DataSource dataSource;
 
@@ -30,20 +33,22 @@ public class PersistencePuzzle {
     }
 
     public Person save(Person person) throws SQLException {
-        Person created = null;
+        // Insert and Get Generated Person Id
+        long generatedId = -1;
         try (Connection connection = this.dataSource.getConnection();
              PreparedStatement preparedStatement
                      = connection
-                     .prepareStatement("INSERT INTO person(name) VALUES (?)",
+                     .prepareStatement(INSERT_SQL,
                              Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, person.name());
             preparedStatement.execute();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             if(resultSet.next()) {
-                created = findById(resultSet.getLong(1)).get();
+                generatedId = resultSet.getLong(1);
             }
         }
-        return created;
+        // Fetch Person from Generated Person Id
+        return findById(generatedId).orElse(null);
     }
 
     Optional<Person> findById(Long id) throws SQLException {
@@ -51,7 +56,7 @@ public class PersistencePuzzle {
         try (Connection connection = this.dataSource.getConnection();
              PreparedStatement preparedStatement
                      = connection
-                     .prepareStatement("SELECT id,name from person where id=?")) {
+                     .prepareStatement(SELECT_SQL)) {
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if(resultSet.next()) {
