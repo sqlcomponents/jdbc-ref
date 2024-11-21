@@ -1,37 +1,41 @@
 package com.techatpark.practices.jdbc.store;
 
-import com.techatpark.practices.jdbc.model.MyEntity;
+import com.techatpark.practices.jdbc.model.Person;
 
-import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
+import javax.sql.DataSource;
+import java.sql.SQLException;
 
-public class MyEntityService {
+import java.sql.Connection;
+import java.sql.Statement;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
+/**
+ * Only You, JDK and JDBC Drive (Postgres)
+ *
+ * ./mvnw dependency:tree -Dscope=compile
+ *
+ * You use this in Spring Boot, Quarkus or Anything
+ */
+public class PersistencePuzzle {
 
     private final DataSource dataSource;
 
-    public MyEntityService(final DataSource dataSource) {
+    public PersistencePuzzle(final DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
-
-    public MyEntity save(MyEntity myEntity) throws SQLException {
-        MyEntity created = null;
+    public Person save(Person person) throws SQLException {
+        Person created = null;
         try (Connection connection = this.dataSource.getConnection();
              PreparedStatement preparedStatement
                      = connection
-                     .prepareStatement("INSERT INTO my_entity(the_value) VALUES (?)",
+                     .prepareStatement("INSERT INTO person(name) VALUES (?)",
                              Statement.RETURN_GENERATED_KEYS)) {
-            preparedStatement.setString(1, myEntity.theValue());
+            preparedStatement.setString(1, person.name());
             preparedStatement.execute();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             if(resultSet.next()) {
@@ -41,22 +45,20 @@ public class MyEntityService {
         return created;
     }
 
-    Optional<MyEntity> findById(Long id) throws SQLException {
-        MyEntity myEntity = null;
+    Optional<Person> findById(Long id) throws SQLException {
+        Person person = null;
         try (Connection connection = this.dataSource.getConnection();
              PreparedStatement preparedStatement
                      = connection
-                     .prepareStatement("SELECT id,the_value from my_entity where id=?")) {
+                     .prepareStatement("SELECT id,name from person where id=?")) {
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if(resultSet.next()) {
-                myEntity = new MyEntity(resultSet.getLong(1),
+                person = new Person(resultSet.getLong(1),
                         resultSet.getString(2));
             }
         }
-        return Optional.ofNullable(myEntity);
+        return Optional.ofNullable(person);
     }
-
-
 
 }

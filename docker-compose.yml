@@ -3,7 +3,7 @@ version: '3.8'
 services:
   postgres_db:
     image: postgres:11
-    container_name: MovieDatabase
+    container_name: the_database
     restart: always
     environment:
       - POSTGRES_USER=postgres

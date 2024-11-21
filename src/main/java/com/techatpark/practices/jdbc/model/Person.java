@@ -1,4 +1,4 @@
 package com.techatpark.practices.jdbc.model;
 
-public record MyEntity(Long id, String theValue) {
+public record Person(Long id, String name) {
 }

@@ -12,5 +12,5 @@ docker-compose up -d
 View SQL Queries
 
 ```shell
-docker logs -f MovieDatabase
+docker logs -f the_database
 ```

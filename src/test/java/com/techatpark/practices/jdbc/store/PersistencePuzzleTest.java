@@ -1,28 +1,86 @@
 package com.techatpark.practices.jdbc.store;
 
-import com.techatpark.practices.jdbc.model.MyEntity;
+import com.techatpark.practices.jdbc.model.Person;
 import org.junit.jupiter.api.Test;
 import org.postgresql.ds.PGSimpleDataSource;
 
 import java.sql.SQLException;
 
-
 /**
  * Persistence Puzzle
  *
  * We need to save and retrieve person object from java to RDBMS.
- * Lets Measure the fundamental approaches
+ * Lets Measure the fundamental approaches.
+ *
+ * Note: This is not about feature list comparison.
  */
-class MyEntityServiceTest {
+class PersistencePuzzleTest {
 
     @Test
-    void testPuzzle() throws SQLException {
+    void test() throws SQLException {
 
-        MyEntityService myEntityService = new MyEntityService(getDataSource());
+        PersistencePuzzle persistencePuzzle = new PersistencePuzzle(getDataSource());
 
-        System.out.println(myEntityService.save(new MyEntity(null,"Hello")));
+        // The Puzzle
+        Person person = persistencePuzzle.save(new Person(null,"Hello"));
+
+        System.out.println(person);
 
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
