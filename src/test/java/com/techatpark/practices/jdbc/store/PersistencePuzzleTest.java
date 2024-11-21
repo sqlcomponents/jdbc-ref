@@ -2,7 +2,12 @@ package com.techatpark.practices.jdbc.store;
 
 import com.techatpark.practices.jdbc.model.Person;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.postgresql.ds.PGSimpleDataSource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.sql.SQLException;
 
@@ -14,12 +19,14 @@ import java.sql.SQLException;
  *
  * Note: This is not about feature list comparison.
  */
+@SpringBootTest
 class PersistencePuzzleTest {
+
+    @Autowired
+    private PersistencePuzzle persistencePuzzle;
 
     @Test
     void test() throws SQLException {
-
-        PersistencePuzzle persistencePuzzle = new PersistencePuzzle(getDataSource());
 
         // The Puzzle
         Person person = persistencePuzzle.save(new Person(null,"Hello"));

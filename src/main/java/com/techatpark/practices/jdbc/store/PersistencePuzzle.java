@@ -1,17 +1,12 @@
 package com.techatpark.practices.jdbc.store;
 
 import com.techatpark.practices.jdbc.model.Person;
+import org.springframework.jdbc.core.simple.JdbcClient;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-
-import javax.sql.DataSource;
-import java.sql.SQLException;
-
-import java.sql.Connection;
-import java.sql.Statement;
-
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 
 /**
  * 1. Only You, JDK and JDBC Drive (Postgres)
@@ -21,45 +16,34 @@ import java.sql.ResultSet;
  * 2. Use Anything JAVA permits
  * 3. You use this in Spring Boot, Quarkus or Anything. (Framework/Library Independent)
  */
+@Service
 public class PersistencePuzzle {
 
-    private final DataSource dataSource;
+    private final JdbcClient jdbcClient;
 
-    public PersistencePuzzle(final DataSource dataSource) {
-        this.dataSource = dataSource;
+    public PersistencePuzzle(final JdbcClient jdbcClient) {
+        this.jdbcClient = jdbcClient;
     }
 
-    public Person save(Person person) throws SQLException {
-        Person created = null;
-        try (Connection connection = this.dataSource.getConnection();
-             PreparedStatement preparedStatement
-                     = connection
-                     .prepareStatement("INSERT INTO person(name) VALUES (?)",
-                             Statement.RETURN_GENERATED_KEYS)) {
-            preparedStatement.setString(1, person.name());
-            preparedStatement.execute();
-            ResultSet resultSet = preparedStatement.getGeneratedKeys();
-            if(resultSet.next()) {
-                created = findById(resultSet.getLong(1)).get();
-            }
-        }
-        return created;
+    public Person save(Person person) {
+
+        String sql = "insert into person(name) values (?)";
+
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        jdbcClient.sql(sql)
+                .param(1,person.name())
+                .update(keyHolder,  "id" );
+
+        return findById(keyHolder.getKey().longValue()).get();
     }
 
-    Optional<Person> findById(Long id) throws SQLException {
-        Person person = null;
-        try (Connection connection = this.dataSource.getConnection();
-             PreparedStatement preparedStatement
-                     = connection
-                     .prepareStatement("SELECT id,name from person where id=?")) {
-            preparedStatement.setLong(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if(resultSet.next()) {
-                person = new Person(resultSet.getLong(1),
-                        resultSet.getString(2));
-            }
-        }
-        return Optional.ofNullable(person);
+    Optional<Person> findById(Long id) {
+        return jdbcClient.sql("SELECT id,name from person where id=?")
+                .param(id)
+                .query((resultSet, rowNum) -> new Person(resultSet.getLong(1),
+                        resultSet.getString(2)))
+                .optional();
     }
 
 }
