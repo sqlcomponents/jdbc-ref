@@ -2,55 +2,68 @@ package com.techatpark.practices.jdbc.store;
 
 import com.techatpark.practices.jdbc.model.MyEntity;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+
+/**
+ * Persistence Puzzle
+ *
+ * We need to save and retrieve person object from java to RDBMS.
+ *
+ * Lets Measure the fundamental approaches
+ */
 public class MyEntityService {
 
-    public void create(MyEntity myEntity) throws SQLException {
-        Connection connection = getConnection();
-        String insertQuery = "INSERT INTO my_entity(the_value) VALUES (?)";
-        PreparedStatement preparedStatement = connection.prepareStatement(insertQuery);
+    private final DataSource dataSource;
 
-        preparedStatement.setString(1, myEntity.theValue());
-        preparedStatement.execute();
+    public MyEntityService(final DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 
 
-    public List<MyEntity> list() throws SQLException {
-        List<MyEntity> myEntities = new ArrayList<>();
-
-        Connection connection = getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement("SELECT id,the_value from my_entity");
-
-            // Step 3: Execute the query or update query
-            ResultSet rs = preparedStatement.executeQuery();
-
-            // Step 4: Process the ResultSet object.
-            while (rs.next()) {
-
-                myEntities.add(new MyEntity(rs.getLong(1), rs.getString(2)));
+    public MyEntity save(MyEntity myEntity) throws SQLException {
+        MyEntity created = null;
+        try (Connection connection = this.dataSource.getConnection();
+             PreparedStatement preparedStatement
+                     = connection
+                     .prepareStatement("INSERT INTO my_entity(the_value) VALUES (?)",
+                             Statement.RETURN_GENERATED_KEYS)) {
+            preparedStatement.setString(1, myEntity.theValue());
+            preparedStatement.execute();
+            ResultSet resultSet = preparedStatement.getGeneratedKeys();
+            if(resultSet.next()) {
+                created = findById(resultSet.getLong(1)).get();
             }
-
-        return myEntities;
+        }
+        return created;
     }
 
-    public void delete() throws SQLException {
-        Connection connection = getConnection();
-        connection.prepareStatement("DELETE FROM my_entity").execute();
+    Optional<MyEntity> findById(Long id) throws SQLException {
+        MyEntity myEntity = null;
+        try (Connection connection = this.dataSource.getConnection();
+             PreparedStatement preparedStatement
+                     = connection
+                     .prepareStatement("SELECT id,the_value from my_entity where id=?")) {
+            preparedStatement.setLong(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()) {
+                myEntity = new MyEntity(resultSet.getLong(1),
+                        resultSet.getString(2));
+            }
+        }
+        return Optional.ofNullable(myEntity);
     }
 
-
-    private Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(
-                "jdbc:postgresql://127.0.0.1:5432/postgres", "postgres", "postgres123");
-    }
 
 
 }

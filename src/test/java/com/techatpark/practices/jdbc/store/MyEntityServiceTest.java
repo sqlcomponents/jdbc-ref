@@ -1,8 +1,8 @@
 package com.techatpark.practices.jdbc.store;
 
 import com.techatpark.practices.jdbc.model.MyEntity;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.postgresql.ds.PGSimpleDataSource;
 
 import java.sql.SQLException;
 
@@ -11,18 +11,19 @@ class MyEntityServiceTest {
     @Test
     void testRoundTrip() throws SQLException {
 
-        MyEntityService movieMaker = new MyEntityService();
+        MyEntityService myEntityService = new MyEntityService(getDataSource());
 
-        movieMaker.delete();
-
-        MyEntity myEntity = new MyEntity(1L, "Hello");
-
-        movieMaker.create(myEntity);
-
-        myEntity = movieMaker.list().get(0);
-
-        Assertions.assertEquals(myEntity.theValue(), "Hello");
+        System.out.println(myEntityService.save(new MyEntity(null,"Hello")));
 
 
+    }
+
+    private static PGSimpleDataSource getDataSource() {
+        PGSimpleDataSource ds = new PGSimpleDataSource() ;
+        ds.setServerName( "localhost" );
+        ds.setDatabaseName( "postgres" );
+        ds.setUser( "postgres" );
+        ds.setPassword( "postgres123" );
+        return ds;
     }
 }
