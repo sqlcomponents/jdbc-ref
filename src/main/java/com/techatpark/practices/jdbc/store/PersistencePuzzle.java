@@ -15,13 +15,6 @@ import java.util.List;
 import java.util.Optional;
 
 
-/**
- * Persistence Puzzle
- *
- * We need to save and retrieve person object from java to RDBMS.
- *
- * Lets Measure the fundamental approaches
- */
 public class MyEntityService {
 
     private final DataSource dataSource;
