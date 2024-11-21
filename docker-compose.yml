@@ -15,7 +15,6 @@ services:
     command:
       [
         "postgres",
-        "-c", "log_statement=ddl",
-        "-c", "log_line_prefix=",
-        "-c", "log_statement=mod",
+        "-c", "log_statement=all",
+        "-c", "log_line_prefix="
       ]
