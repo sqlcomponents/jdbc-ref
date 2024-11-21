@@ -14,11 +14,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 /**
- * 1. Only You, JDK and JDBC Drive (Postgres)
+ * 1. Only You, JDK and JDBC Driver (Postgres)
  *
  * mvn dependency:tree -Dscope=compile
  *
- * 2. Use Anything JAVA permits
+ * 2. Use Anything YOUR JAVA permits
  * 3. You use this in Spring Boot, Quarkus or Anything. (Framework/Library Independent)
  */
 public class PersistencePuzzle {
