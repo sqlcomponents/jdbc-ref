@@ -1,8 +1,11 @@
-package com.techatpark.store;
+package com.techatpark;
 
 import com.techatpark.model.Person;
+import com.techatpark.store.PersistencePuzzle;
 import org.junit.jupiter.api.Test;
 import org.postgresql.ds.PGSimpleDataSource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.sql.SQLException;
 
@@ -14,15 +17,20 @@ import java.sql.SQLException;
  *
  * Note: This is not about feature list of individual library / Framework.
  */
+@SpringBootTest
 class PersistencePuzzleTest {
+
+    @Autowired
+    private PersistencePuzzle persistencePuzzle;
 
     @Test
     void test() throws SQLException {
 
-        PersistencePuzzle persistencePuzzle = new PersistencePuzzle(getDataSource());
+        Person p = new Person();
+        p.setName("DDDDD");
 
         // The Puzzle
-        Person person = persistencePuzzle.save(new Person(null,"Hello"));
+        Person person = persistencePuzzle.save(p);
 
         System.out.println(person);
 
