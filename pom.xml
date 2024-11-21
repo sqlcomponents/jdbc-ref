@@ -11,7 +11,7 @@
 	<properties>
 		<maven.compiler.target>17</maven.compiler.target>
 		<maven.compiler.source>17</maven.compiler.source>
-
+		<jooq.version>3.19.11</jooq.version>
 		<postgresql.version>42.7.2</postgresql.version>
 		<junit.version>5.9.3</junit.version>
 
@@ -36,6 +36,21 @@
 			<artifactId>postgresql</artifactId>
 			<version>${postgresql.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.jooq</groupId>
+			<artifactId>jooq</artifactId>
+			<version>${jooq.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jooq</groupId>
+			<artifactId>jooq-meta</artifactId>
+			<version>${jooq.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jooq</groupId>
+			<artifactId>jooq-codegen</artifactId>
+			<version>${jooq.version}</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
@@ -44,5 +59,65 @@
 		</dependency>
 
 	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.jooq</groupId>
+				<artifactId>jooq-codegen-maven</artifactId>
+				<dependencies>
+					<dependency>
+						<groupId>org.postgresql</groupId>
+						<artifactId>postgresql</artifactId>
+						<version>${postgresql.version}</version>
+					</dependency>
+				</dependencies>
+				<!-- More shared defaults are defined in the parent pom.xml -->
+				<configuration>
+					<jdbc>
+						<url>jdbc:postgresql://localhost:5432/postgres</url>
+						<user>postgres</user>
+						<password>postgres123</password>
+					</jdbc>
+					<generator>
+						<database>
+							<!--                      <includes>.*(my_table)</includes>-->
+							<excludes>
+								(?i:information_schema\..*)
+								| (?i:pg_catalog\..*)
+							</excludes>
+							<inputSchema>public</inputSchema>
+						</database>
+						<generate>
+							<pojosAsJavaRecordClasses>true</pojosAsJavaRecordClasses>
+						</generate>
+						<target>
+							<!-- We're version controlling the source code for better documentation on github, etc.
+                                 This isn't necessary, though, see also:
+                                 https://www.jooq.org/doc/latest/manual/code-generation/codegen-version-control/ -->
+							<directory>src/main/java</directory>
+						</target>
+					</generator>
+				</configuration>
+
+				<executions>
+					<execution>
+						<id>generate-demo-java</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<generator>
+								<target>
+									<packageName>com.techatpark</packageName>
+								</target>
+							</generator>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 
 </project>

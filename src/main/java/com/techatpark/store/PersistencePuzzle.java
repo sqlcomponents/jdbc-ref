@@ -1,6 +1,6 @@
 package com.techatpark.store;
 
-import com.techatpark.model.Person;
+import org.techatpark.tables.Person;
 
 import java.util.Optional;
 
@@ -32,39 +32,39 @@ public class PersistencePuzzle {
         this.dataSource = dataSource;
     }
 
-    public Person save(Person person) throws SQLException {
-        // Insert and Get Generated Person Id
-        long generatedId = -1;
-        try (Connection connection = this.dataSource.getConnection();
-             PreparedStatement preparedStatement
-                     = connection
-                     .prepareStatement(INSERT_SQL,
-                             Statement.RETURN_GENERATED_KEYS)) {
-            preparedStatement.setString(1, person.name());
-            preparedStatement.execute();
-            ResultSet resultSet = preparedStatement.getGeneratedKeys();
-            if(resultSet.next()) {
-                generatedId = resultSet.getLong(1);
-            }
-        }
-        // Fetch Person from Generated Person Id
-        return findById(generatedId).orElse(null);
-    }
-
-    Optional<Person> findById(Long id) throws SQLException {
-        Person person = null;
-        try (Connection connection = this.dataSource.getConnection();
-             PreparedStatement preparedStatement
-                     = connection
-                     .prepareStatement(SELECT_SQL)) {
-            preparedStatement.setLong(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if(resultSet.next()) {
-                person = new Person(resultSet.getLong(1),
-                        resultSet.getString(2));
-            }
-        }
-        return Optional.ofNullable(person);
-    }
+//    public Person save(Person person) throws SQLException {
+//        // Insert and Get Generated Person Id
+//        long generatedId = -1;
+//        try (Connection connection = this.dataSource.getConnection();
+//             PreparedStatement preparedStatement
+//                     = connection
+//                     .prepareStatement(INSERT_SQL,
+//                             Statement.RETURN_GENERATED_KEYS)) {
+//            preparedStatement.setString(1, person.getName());
+//            preparedStatement.execute();
+//            ResultSet resultSet = preparedStatement.getGeneratedKeys();
+//            if(resultSet.next()) {
+//                generatedId = resultSet.getLong(1);
+//            }
+//        }
+//        // Fetch Person from Generated Person Id
+//        return findById(generatedId).orElse(null);
+//    }
+//
+//    Optional<Person> findById(Long id) throws SQLException {
+//        Person person = null;
+//        try (Connection connection = this.dataSource.getConnection();
+//             PreparedStatement preparedStatement
+//                     = connection
+//                     .prepareStatement(SELECT_SQL)) {
+//            preparedStatement.setLong(1, id);
+//            ResultSet resultSet = preparedStatement.executeQuery();
+//            if(resultSet.next()) {
+//                person = new Person(resultSet.getLong(1),
+//                        resultSet.getString(2));
+//            }
+//        }
+//        return Optional.ofNullable(person);
+//    }
 
 }

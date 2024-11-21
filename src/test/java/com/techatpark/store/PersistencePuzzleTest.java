@@ -1,6 +1,6 @@
 package com.techatpark.store;
 
-import com.techatpark.model.Person;
+import org.example.tables.Person;
 import org.junit.jupiter.api.Test;
 import org.postgresql.ds.PGSimpleDataSource;
 
@@ -22,9 +22,12 @@ class PersistencePuzzleTest {
         PersistencePuzzle persistencePuzzle = new PersistencePuzzle(getDataSource());
 
         // The Puzzle
-        Person person = persistencePuzzle.save(new Person(null,"Hello"));
+//        Person person = persistencePuzzle.save(new Person(null,"Hello"));
 
-        System.out.println(person);
+
+
+
+//        System.out.println(person);
 
     }
 
