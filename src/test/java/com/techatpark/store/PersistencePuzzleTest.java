@@ -10,9 +10,9 @@ import java.sql.SQLException;
  * Persistence Puzzle
  *
  * We need to save and retrieve person object from java to RDBMS.
- * Lets Measure the fundamental approaches.
+ * Let's Measure the fundamental approaches.
  *
- * Note: This is not about feature list comparison.
+ * Note: This is not about feature list of individual library / Framework.
  */
 class PersistencePuzzleTest {
 
