@@ -24,13 +24,10 @@ class PersistencePuzzleTest {
     private PersistencePuzzle persistencePuzzle;
 
     @Test
-    void test() throws SQLException {
-
-        Person p = new Person();
-        p.setName("DDDDD");
+    void test() {
 
         // The Puzzle
-        Person person = persistencePuzzle.save(p);
+        Person person = persistencePuzzle.save(new Person(null,"Hello"));
 
         System.out.println(person);
 
