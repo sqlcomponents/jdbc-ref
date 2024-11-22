@@ -16,12 +16,15 @@ import java.sql.SQLException;
  */
 class PersistencePuzzleTest {
 
+    private final PersistencePuzzle persistencePuzzle;
+
+    PersistencePuzzleTest() {
+        persistencePuzzle = new PersistencePuzzle(getDataSource());
+    }
+
     @Test
     void test() throws SQLException {
 
-        PersistencePuzzle persistencePuzzle = new PersistencePuzzle(getDataSource());
-
-        // The Puzzle
         Person person = persistencePuzzle.save(new Person(null,"Hello"));
 
         System.out.println(person);
