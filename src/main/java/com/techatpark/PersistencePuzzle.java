@@ -42,9 +42,9 @@ public class PersistencePuzzle {
                              Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, person.name());
             preparedStatement.execute();
-            ResultSet resultSet = preparedStatement.getGeneratedKeys();
-            if(resultSet.next()) {
-                generatedId = resultSet.getLong(1);
+            ResultSet rs = preparedStatement.getGeneratedKeys();
+            if(rs.next()) {
+                generatedId = rs.getLong(1);
             }
         }
         // Fetch Person from Generated Person Id
@@ -58,10 +58,10 @@ public class PersistencePuzzle {
                      = connection
                      .prepareStatement(SELECT_SQL)) {
             preparedStatement.setLong(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if(resultSet.next()) {
-                person = new Person(resultSet.getLong(1),
-                        resultSet.getString(2));
+            ResultSet rs = preparedStatement.executeQuery();
+            if(rs.next()) {
+                person = new Person(rs.getLong(1),
+                        rs.getString(2));
             }
         }
         return Optional.ofNullable(person);
