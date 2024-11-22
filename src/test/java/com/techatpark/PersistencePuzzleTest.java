@@ -16,7 +16,7 @@ import java.sql.SQLException;
  */
 class PersistencePuzzleTest {
 
-    private final PersistencePuzzle persistencePuzzle;
+    private PersistencePuzzle persistencePuzzle;
 
     PersistencePuzzleTest() {
         persistencePuzzle = new PersistencePuzzle(getDataSource());
