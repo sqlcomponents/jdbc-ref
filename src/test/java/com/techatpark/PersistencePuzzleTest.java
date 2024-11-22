@@ -1,4 +1,4 @@
-package com.techatpark.store;
+package com.techatpark;
 
 import com.techatpark.model.Person;
 import org.junit.jupiter.api.Test;
