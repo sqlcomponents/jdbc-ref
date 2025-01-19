@@ -1,4 +1,4 @@
-package com.techatpark.model;
+package org.sqlcomponents.model;
 
 public record Person(Long id, String name) {
 }

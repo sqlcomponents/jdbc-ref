@@ -1,6 +1,6 @@
-package com.techatpark;
+package org.sqlcomponents;
 
-import com.techatpark.model.Person;
+import org.sqlcomponents.model.Person;
 import org.junit.jupiter.api.Test;
 import org.postgresql.ds.PGSimpleDataSource;
 

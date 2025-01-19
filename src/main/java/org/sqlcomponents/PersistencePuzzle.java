@@ -1,6 +1,6 @@
-package com.techatpark;
+package org.sqlcomponents;
 
-import com.techatpark.model.Person;
+import org.sqlcomponents.model.Person;
 
 import java.util.Optional;
 
@@ -14,12 +14,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 /**
- * 1. Only You, JDK and JDBC Driver (Postgres)
- *
- * mvn dependency:tree -Dscope=compile
- *
- * 2. Use Anything YOUR JAVA permits
- * 3. You use this in Spring Boot, Quarkus or Anything. (Framework/Library Independent)
+ * Explore various persistence approaches in Java with hands-on examples.
  */
 public class PersistencePuzzle {
 
