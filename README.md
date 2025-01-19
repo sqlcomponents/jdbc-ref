@@ -15,3 +15,9 @@ View SQL Queries
 ```shell
 docker logs -f the_database
 ```
+
+View Dependencies
+
+```shell
+./mvnw dependency:tree -Dscope=compile
+```
