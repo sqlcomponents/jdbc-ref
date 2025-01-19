@@ -12,8 +12,8 @@
 		<maven.compiler.target>17</maven.compiler.target>
 		<maven.compiler.source>17</maven.compiler.source>
 
-		<postgresql.version>42.7.2</postgresql.version>
-		<junit.version>5.9.3</junit.version>
+		<postgresql.version>42.7.5</postgresql.version>
+		<junit.version>5.11.4</junit.version>
 
 	</properties>
 

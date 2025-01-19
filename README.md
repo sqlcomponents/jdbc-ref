@@ -1,5 +1,6 @@
-# jdbc-ref
-JDBC Playground
+# Persistence Puzzle
+
+Explore various persistence approaches in Java with hands-on examples. This repository showcases techniques like JPA, JDBC, SQL Builders, and more, highlighting their strengths and limitations to help developers make informed decisions.
 
 ## Setup
 
